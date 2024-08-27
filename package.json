@@ -24,20 +24,22 @@
   },
   "dependencies": {
     "@aws-cdk/aws-codestar-alpha": "2.0.0-alpha.1",
-    "sst": "2.x",
-    "constructs": "10.1.156",
     "@types/lodash": "^4.14.182",
+    "@types/mocha": "^10.0.7",
     "aws-cdk-lib": "^2.0.0",
     "aws-sdk": "^2.863.0",
     "axios": "^0.24.0",
+    "constructs": "10.1.156",
     "email-validator": "^2.0.4",
     "fast-csv": "^4.3.6",
     "generate-password": "^1.7.0",
+    "graphql": "16.9.0",
     "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "mongoose": "^6.3.3",
     "slugify": "^1.6.0",
-    "graphql":"16.9.0"
+    "sst": "2.x",
+    "typescript": "^5.5.4"
   }
 }

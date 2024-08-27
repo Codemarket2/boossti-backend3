@@ -2,7 +2,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 20.x
+      nodejs: 18.x
     commands:
       - export NODE_OPTIONS="--max-old-space-size=8192"
       - npm install --silent -g yarn
