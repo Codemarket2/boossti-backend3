@@ -1,52 +1,58 @@
 import * as sst from "sst/constructs";
-import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { AuthorizationType, UserPoolDefaultAction } from 'aws-cdk-lib/aws-appsync';
-import { UserPool } from 'aws-cdk-lib/aws-cognito';
-import * as cdk from 'aws-cdk-lib';
+import * as cdk from "aws-cdk-lib";
 import dataSources from './dataSources';
 import resolvers from './resolvers';
 import schemas from './schemas';
+import { Cognito } from "sst/constructs";
+import { DATABASE, DISTRIBUTION_ID, EMAIL_VERIFICATION_API, FRONTEND_URL, ONESIGNAL_API_KEY, ONESIGNAL_APP_ID, SENDER_EMAIL, SNS_ORIGINAL_NUMBER, USERS_FORM_SLUG } from "../path";
+import { StringParameter } from "aws-cdk-lib/aws-ssm";
 
 export function MyStack({ stack, app }: sst.StackContext) {
   // Define your stack
-  const SENDER_EMAIL = StringParameter.valueForStringParameter(this, '/boossti/sender-email');
-  // const GRAPHQL_API_URL = StringParameter.valueForStringParameter(
+  // const SENDER_EMAIL = StringParameter.valueForStringParameter(this, '/boossti/sender-email');
+  const GRAPHQL_API_URL = StringParameter.valueForStringParameter(
+    this,
+    `/boossti/graphql-api-url/${app.stage}`,
+  );
+  const GRAPHQL_API_KEY = StringParameter.valueForStringParameter(
+    this,
+    `/boossti/graphql-api-key/${app.stage}`,
+  );
+  // const DISTRIBUTION_ID = StringParameter.valueForStringParameter(
   //   this,
-  //   `/boossti/graphql-api-url/${scope.stage}`,
+  //   `/boossti/frontend/master/distribution-id`,
   // );
-  // const GRAPHQL_API_KEY = StringParameter.valueForStringParameter(
+  // const FRONTEND_URL = StringParameter.valueForStringParameter(this, '/boossti/frontend-url');
+  // const EMAIL_VERIFICATION_API = StringParameter.valueForStringParameter(
   //   this,
-  //   `/boossti/graphql-api-key/${scope.stage}`,
+  //   '/boossti/emailverification/apiKey',
   // );
-  const DISTRIBUTION_ID = StringParameter.valueForStringParameter(
-    this,
-    `/boossti/frontend/master/distribution-id`,
-  );
-  const FRONTEND_URL = StringParameter.valueForStringParameter(this, '/boossti/frontend-url');
-  const EMAIL_VERIFICATION_API = StringParameter.valueForStringParameter(
-    this,
-    '/boossti/emailverification/apiKey',
-  );
-  const SNS_ORIGINAL_NUMBER = StringParameter.valueForStringParameter(
-    this,
-    '/codemarket/sns/originalNumber',
-  );
-  const USERS_FORM_SLUG = StringParameter.valueForStringParameter(
-    this,
-    '/boossti/form-slug/users',
-  );
-  const USER_POOL_ID = StringParameter.valueForStringParameter(this, '/boossti/userpool-id');
-  const userPool = UserPool.fromUserPoolId(this, 'UserPool', USER_POOL_ID);
+  // const SNS_ORIGINAL_NUMBER = StringParameter.valueForStringParameter(
+  //   this,
+  //   '/codemarket/sns/originalNumber',
+  // );
+  // const USERS_FORM_SLUG = StringParameter.valueForStringParameter(
+  //   this,
+  //   '/boossti/form-slug/users',
+  // );
+  const USER_POOL_ID = StringParameter.valueForStringParameter(this, `/boossti/userpool-id/${app.stage}`);
+
+
+  const auth = new Cognito(stack, "UserPool");
 
   const api = new sst.AppSyncApi(stack, 'graphql', {
     schema: schemas,
+    dataSources: dataSources,
+    resolvers: { ...resolvers },
+
     cdk: {
       graphqlApi: {
         authorizationConfig: {
           defaultAuthorization: {
             authorizationType: AuthorizationType.USER_POOL,
             userPoolConfig: {
-              userPool: userPool,
+              userPool: auth.cdk.userPool,
               defaultAction: UserPoolDefaultAction.ALLOW,
             },
           },
@@ -66,23 +72,21 @@ export function MyStack({ stack, app }: sst.StackContext) {
       function: {
         timeout: 60,
         environment: {
-          SENDER_EMAIL: SENDER_EMAIL || '',
-          DATABASE: `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@codemarket-staging.k16z7.mongodb.net/${app.stage}?retryWrites=true&w=majority`,
-          USER_POOL_ID: USER_POOL_ID,
-          SNS_ORIGINAL_NUMBER: SNS_ORIGINAL_NUMBER,
-          GRAPHQL_API_URL: process.env.GRAPHQL_API_URL || '',
-          GRAPHQL_API_KEY: process.env.GRAPHQL_API_KEY || '',
-          ONESIGNAL_API_KEY: process.env.ONESIGNAL_API_KEY || '',
-          ONESIGNAL_APP_ID: process.env.ONESIGNAL_APP_ID || '',
-          DISTRIBUTION_ID: DISTRIBUTION_ID || '',
+          SENDER_EMAIL,
+          DATABASE,
+          USER_POOL_ID,
+          SNS_ORIGINAL_NUMBER,
+          GRAPHQL_API_URL,
+          GRAPHQL_API_KEY,
+          ONESIGNAL_API_KEY,
+          ONESIGNAL_APP_ID,
+          DISTRIBUTION_ID,
           FRONTEND_URL,
-          STAGE: app.stage,
           USERS_FORM_SLUG,
+          STAGE: app.stage,
         },
       }
     },
-    dataSources: dataSources,
-    resolvers: { ...resolvers },
   });
 
   const csvFunction = new sst.Function(stack, 'MyApiLambda', {
@@ -91,8 +95,8 @@ export function MyStack({ stack, app }: sst.StackContext) {
     memorySize: 3008,
     timeout: 900,
     environment: {
-      EMAIL_VERIFICATION_API: EMAIL_VERIFICATION_API,
-      DATABASE: `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@codemarket-staging.k16z7.mongodb.net/${app.stage}?retryWrites=false&w=majority`,
+      EMAIL_VERIFICATION_API,
+      DATABASE,
     },
   });
 
@@ -105,7 +109,5 @@ export function MyStack({ stack, app }: sst.StackContext) {
 
     ApiKey: api.cdk.graphqlApi.apiKey,
     FunctionName: csvFunction.functionName,
-    // graphqlURL: graphqlURL.stringValue,
   });
-
 }

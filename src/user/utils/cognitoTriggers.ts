@@ -16,12 +16,9 @@ import {
   updateEmailVerified,
 } from './helper';
 
-import { postAuthenticationTrigger } from './PostAuthenticationTrigger';
-
 import { User } from './userModel';
 import { DB } from '../../utils/DB';
 
-export { postAuthenticationTrigger };
 
 export const preSignUpTrigger = async (
   event: PreSignUpTriggerEvent | PostConfirmationTriggerEvent | PostAuthenticationTriggerEvent,
@@ -102,9 +99,7 @@ export const preSignUpTrigger = async (
         providerUserId,
       });
 
-      // @ts-expect-error event.response.autoConfirmUser can be {}
       event.response.autoConfirmUser = true;
-      // @ts-expect-error event.response.autoVerifyEmail can be {}
       event.response.autoVerifyEmail = true;
     }
   }
@@ -136,6 +131,27 @@ export const postConfirmationSignupTrigger = async (
   console.log('Post Confirmation Signup Triggered');
   // if the email is verified in cognito then also make emailVerified = true property of User in the Database
   // await updateEmailVerified(event);
+
+  return event;
+};
+
+export const postAuthenticationTrigger = async (event: PostAuthenticationTriggerEvent) => {
+  const { userAttributes } = event.request;
+  console.log('Post Authentication SignIn Triggered');
+  // if (!event.request.userAttributes.hasOwnProperty('custom:_id')) {
+  //   await DB();
+  //   const userId = event.userName;
+  //   const tempUser: any = await User.findOne({
+  //     userId: userId,
+  //   });
+  //   await adminUpdateUserAttribute(userId, {
+  //     Name: 'custom:_id',
+  //     Value: `${tempUser._id}`,
+  //   });
+  // }
+
+  // if the email is verified then also make emailVerified = true property of User in the Database
+  await updateEmailVerified(event);
 
   return event;
 };

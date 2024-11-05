@@ -1,0 +1,12 @@
+export const SENDER_EMAIL = process.env.SENDER_EMAIL as string;
+export const DISTRIBUTION_ID = process.env.DISTRIBUTION_ID as string;
+export const FRONTEND_URL = process.env.FRONTEND_URL as string;
+export const EMAIL_VERIFICATION_API = process.env.EMAIL_VERIFICATION_API as string;
+export const SNS_ORIGINAL_NUMBER = process.env.SNS_ORIGINAL_NUMBER as string;
+export const USERS_FORM_SLUG = process.env.USERS_FORM_SLUG as string;
+export const USER_POOL_ID = process.env.USER_POOL_ID as string;
+export const DATABASE = process.env.DATABASE as string;
+export const GRAPHQL_API_URL = process.env.GRAPHQL_API_URL as string;
+export const GRAPHQL_API_KEY = process.env.GRAPHQL_API_KEY as string;
+export const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID as string;
+export const ONESIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY as string;

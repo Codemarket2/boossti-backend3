@@ -114,7 +114,7 @@ export const handler = async (event: AppSyncEvent): Promise<any> => {
           },
           {
             subscription: tempSubscription,
-            updatedBy: identity.claims.sub,
+            updatedBy: authUser._id,
             updatedAt: new Date(),
           },
           {
@@ -137,8 +137,6 @@ export const handler = async (event: AppSyncEvent): Promise<any> => {
         throw new Error('Something went wrong! Please check your resolver mapping template');
     }
   } catch (error) {
-    // console.log('error', error);
-    const error2 = error;
-    throw error2;
+    throw error;
   }
 };

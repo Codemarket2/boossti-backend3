@@ -3,7 +3,7 @@ import { getCurrentUser } from '../utils/authentication';
 import { AppSyncEvent } from '../utils/customTypes';
 import { User } from '../user/utils/userModel';
 import { StarRating } from './utils/starRatingModel';
-import * as mongoose from 'mongoose';
+import { userPopulate as UserPopulate, userSelect } from '../utils/populate';
 
 export const handler = async (event: AppSyncEvent): Promise<any> => {
   try {
@@ -12,12 +12,11 @@ export const handler = async (event: AppSyncEvent): Promise<any> => {
     const { identity } = event;
     let args = { ...event.arguments };
     const user = await getCurrentUser(identity);
-    const userSelect = 'name picture _id';
     let data: any = [];
     const { page = 1, limit = 10 } = args;
     let tempStarRatings: any;
     const userPopulate = {
-      path: 'createdBy',
+      path: UserPopulate,
       select: userSelect,
     };
     if (fieldName.toLocaleLowerCase().includes('create') && user && user._id) {
@@ -48,7 +47,7 @@ export const handler = async (event: AppSyncEvent): Promise<any> => {
       }
       case 'getStarRating': {
         const getStarRating = await StarRating.findById(args._id).populate(userPopulate);
-        return await getStarRating;
+        return getStarRating;
       }
       case 'getRatingCounts': {
         const userStarRating = await StarRating.findOne({
@@ -58,7 +57,7 @@ export const handler = async (event: AppSyncEvent): Promise<any> => {
         const averageStarRating = await StarRating.aggregate([
           {
             $match: {
-              parentId: mongoose.Types.ObjectId(args.parentId),
+              parentId: args.parentId,
             },
           },
           {
