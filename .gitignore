@@ -45,10 +45,4 @@ globalConfig.json
 temporary
 
 data-migration/*.json
-
-
-
-
-
-.env.example
 .env.example
