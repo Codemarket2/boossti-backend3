@@ -10,8 +10,9 @@ export const DB = async (DB_STRING?: string) => {
     } else if (!process.env.DATABASE && !DB_STRING) {
       throw new Error('Database connection string not found');
     } else {
-      const db = await mongoose.connect(DB_STRING || process.env.DATABASE || '');
-      isConnected = db.connections[0].readyState;
+      const escapedDBString = encodeURIComponent(DB_STRING || process.env.DATABASE || '');
+      const db = await mongoose.connect(escapedDBString);
+      isConnected = db.connections[0].readyState;  
       console.log('DB Connection Successful!');
     }
     await createCollections();
