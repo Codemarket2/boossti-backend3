@@ -34,7 +34,7 @@ yarn-error.log*
 # typescript
 *.env
 !sample.env
-
+.env.example
 
 
 sample.txt
@@ -50,3 +50,5 @@ data-migration/*.json
 
 
 
+.env.example
+.env.example
