@@ -6,11 +6,15 @@ export interface IPermissionGroup extends ISchema {
   userPoolId: string;
   description: string;
   precedence?: number;
-  view?: string;
-  create?: string;
-  update?: string;
-  delete?: string;
-  viewAll: boolean;
+  view?: boolean; // Changed to boolean to match the schema
+  create?: boolean; // Changed to boolean to match the schema 
+  update?: boolean; // Changed to boolean to match the schema 
+  delete?: boolean; // Changed to boolean to match the schema 
+  viewAll: boolean; 
+  createAll: boolean; // Added to interface 
+  updateAll: boolean; // Added to interface 
+  deleteAll: boolean; // Added to interface
+  
 }
 const permissionGroupSchema = new Schema<IPermissionGroup>(
   {
