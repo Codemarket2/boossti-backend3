@@ -1,0 +1,1 @@
+{"version":3,"file":"resolvers.js","sourceRoot":"","sources":["resolvers.ts"],"names":[],"mappings":";;;AAAa,QAAA,mBAAmB,GAAG,EAAE,CAAC","sourcesContent":["export const permissionResolvers = {};\r\n"]}

@@ -67,7 +67,8 @@ export function MyStack({ stack, app }: sst.StackContext) {
         timeout: 60,
         environment: {
           SENDER_EMAIL: SENDER_EMAIL || '',
-          DATABASE: `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@codemarket-staging.k16z7.mongodb.net/${app.stage}?retryWrites=true&w=majority`,
+          // DATABASE: `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@codemarket-staging.k16z7.mongodb.net/${app.stage}?retryWrites=true&w=majority`,
+          DATABASE: `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@codemarket-staging.k16z7.mongodb.net/boossti-backend-vivekt?retryWrites=true&w=majority`,
           USER_POOL_ID: USER_POOL_ID,
           SNS_ORIGINAL_NUMBER: SNS_ORIGINAL_NUMBER,
           GRAPHQL_API_URL: process.env.GRAPHQL_API_URL || '',

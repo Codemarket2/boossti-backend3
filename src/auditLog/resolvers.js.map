@@ -1,0 +1,1 @@
+{"version":3,"file":"resolvers.js","sourceRoot":"","sources":["resolvers.ts"],"names":[],"mappings":";;;AAAa,QAAA,iBAAiB,GAAG;IAC/B,oBAAoB,EAAE,gBAAgB;CACvC,CAAC","sourcesContent":["export const auditLogResolvers = {\r\n  'Query getAuditLogs': 'auditLogLambda',\r\n};\r\n"]}

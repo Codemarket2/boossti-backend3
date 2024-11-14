@@ -11,7 +11,7 @@ export default {
   },
   stacks(app) {
     app.setDefaultFunctionProps({
-      runtime: "nodejs20.x"
+      runtime: "nodejs18.x"
     })
 
     app.addDefaultFunctionPermissions("*")
