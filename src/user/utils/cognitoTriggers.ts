@@ -28,7 +28,7 @@ export const preSignUpTrigger = async (
 ) => {
   await DB();
   event.request.userAttributes['custom:role'] = 'user';
-  if (event.userName.includes('acebook')) {
+  if (event.userName.includes('facebook')) {
     event.request.userAttributes.picture = JSON.parse(
       event.request.userAttributes.picture,
     ).data.url;
