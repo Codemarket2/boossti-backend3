@@ -57,7 +57,7 @@ const contactSchema = new Schema<IContact>(
       ref: 'User',
     },
     updatedAt: {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.Date,
       ref: 'User',
     },
   },

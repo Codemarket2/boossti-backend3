@@ -58,7 +58,7 @@ export const handler = async (event: AppSyncEvent): Promise<any> => {
         const averageStarRating = await StarRating.aggregate([
           {
             $match: {
-              parentId: mongoose.Types.ObjectId(args.parentId),
+              parentId: new mongoose.Types.ObjectId(args.parentId),
             },
           },
           {

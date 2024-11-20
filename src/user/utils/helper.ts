@@ -4,7 +4,7 @@ import { User } from './userModel';
 import { UserFormConfig } from '../../form/utils/userFormConfig';
 import { FormModel } from '../../form/utils/formModel';
 import { ResponseModel } from '../../form/utils/responseModel';
-import { IValue as ResponseValueType } from '../../form/utils/responseType';
+import { IValue as ResponseValueType } from '../../form/types/response';
 import { PostAuthenticationTriggerEvent } from 'aws-lambda';
 
 const { USER_POOL_ID } = process.env;

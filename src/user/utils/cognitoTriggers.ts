@@ -102,9 +102,7 @@ export const preSignUpTrigger = async (
         providerUserId,
       });
 
-      // @ts-expect-error event.response.autoConfirmUser can be {}
       event.response.autoConfirmUser = true;
-      // @ts-expect-error event.response.autoVerifyEmail can be {}
       event.response.autoVerifyEmail = true;
     }
   }
